@@ -1,10 +1,11 @@
 # Auteurs : Patrick Nolin NOLP18059508
 #           Emanuel Gonthier
 .data
-msg_t:		.asciiz "Veuillez entrer le taille de votre tableau : "
+msg_t:		.asciiz "Veuillez entrer le taille de votre tableau (entre 1 et 20): "
+msg_t_err:	.asciiz "\nTaille invalide.\n"
 msg_e:		.asciiz "Veuillez entrer les éléments du tableau : "
-msg_tri:		.asciiz	"Les éléments triés : "
-msg_virg:		.asciiz ", "
+msg_tri:	.asciiz	"Les éléments triés : "
+msg_virg:	.asciiz ", "
 .text
 main: 	# initialisation du tableau
 	li	$v0,4
@@ -12,9 +13,21 @@ main: 	# initialisation du tableau
 	syscall
 	addi 	$v0,$0,5 	# recupérer saisi utilisateur
 	syscall
-	lui 	$s0,0x1004 	# adresse de base du tableau NE PAS MODIFIER
+	add	$s1, $0, $v0	# nb element
+	sle	$s2, $s1, $0
+	bne	$s2, 1, trop
+	li	$v0, 4
+	la 	$a0, msg_t_err
+	syscall
+	j	main
+trop:	sgt	$s2, $s1, 20
+	bne	$s2, 1, ok
+	li	$v0, 4
+	la 	$a0, msg_t_err
+	syscall
+	j	main
+ok:	lui 	$s0, 0x1004 	# adresse de base du tableau NE PAS MODIFIER
 	ori 	$s0,$s0,0x0000	# charger adresse tableau
-	add	$s1,$0,$v0	# nb element
 	addi 	$s2,$0,0	# compteur
 	li	$v0,4
 	la 	$a0, msg_e

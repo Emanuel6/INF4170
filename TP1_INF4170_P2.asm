@@ -3,6 +3,8 @@
 .data
 msg_t:		.asciiz "Veuillez entrer le taille de votre tableau : "
 msg_e:		.asciiz "Veuillez entrer les éléments du tableau : "
+msg_tri:		.asciiz	"Les éléments triés : "
+msg_virg:		.asciiz ", "
 .text
 main: 	# initialisation du tableau
 	li	$v0,4
@@ -29,7 +31,23 @@ done1:	add	$a0,$0,$s0
 	add	$a1,$0,$s2
 	jal 	sort
 	#terminer le programme
-	addi 	$v0, $0, 10
+	li	$v0, 4
+	la 	$a0, msg_tri
+	syscall
+	add	$s3, $0, $0
+show:	lw	$s4, 0($s0)
+	li	$v0, 1
+	add 	$a0, $0, $s4
+	syscall
+	addi	$s3, $s3, 1
+	addi	$s0, $s0, 4
+	beq	$s3, $s2, end
+	li	$v0, 4
+	la 	$a0, msg_virg
+	syscall
+	j	show
+	syscall
+end:	addi 	$v0, $0, 10
 	syscall
 
 # void sort(int [], int par_taille) :trie un tableau de taille par_taille en utilisant l'algorithme

@@ -1,5 +1,5 @@
 # Auteurs : Patrick Nolin NOLP18059508
-#           Emanuel Gonthier
+#           Emanuel Gonthier GONE27069202
 .data
 msg_t:		.asciiz "Veuillez entrer le taille de votre tableau (entre 1 et 20): "
 msg_t_err:	.asciiz "\nTaille invalide.\n"

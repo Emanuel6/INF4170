@@ -12,18 +12,18 @@ main: 	# initialisation du tableau
 	addi 	$v0,$0,5 	# recupérer saisi utilisateur
 	syscall
 	add	$s1,$0,$v0	# nb element
-	sle	$s2, $s1, $0
+	sle	$s2, $s1, $0	# Est-ce que la saisie est 0 ou moins?
 	bne	$s2, 1, trop
 	li	$v0, 4
-	la 	$a0, msg_t_err
+	la 	$a0, msg_t_err 	# Affichage d'un message d'erreur pour une taille invalide.
 	syscall
-	j	main
-trop:	sgt	$s2, $s1, 20
+	j	main		# On redemande la taille du tableau.
+trop:	sgt	$s2, $s1, 20	# Est-ce que la saisie est plus de 20?
 	bne	$s2, 1, ok
 	li	$v0, 4
-	la 	$a0, msg_t_err
+	la 	$a0, msg_t_err	# Affichage d'un message d'erreur pour une taille invalide.
 	syscall
-	j	main
+	j	main		# On redemande la taille du tableau.
 ok:	lui 	$s0,0x1004 	# adresse de base du tableau NE PAS MODIFIER
 	ori 	$s0,$s0,0x0000	# charger adresse tableau
 	addi 	$s2,$0,0	# compteur

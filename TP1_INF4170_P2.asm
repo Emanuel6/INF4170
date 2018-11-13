@@ -215,52 +215,34 @@ finFix: sll	$t1, $t1, 2
 
 # void swap(int i, int j) :échange le contenu de deux éléments du tableau avec les indices i et j
 swap:	# enregistrer sur la pile les registre utilisé dans la fonction
-	addi 	$sp, $sp, -16
-	sw 	$s1, 12($sp)
-	sw 	$s0, 8($sp)
-	sw	$t1, 4($sp)
-	sw 	$t0, 0($sp)
+	addi 	$sp, $sp, -4
+	sw 	$s0, 0($sp)
 	#nb déplacement
 	sll	$t0,$a0,2	# déplacement i
 	add	$t0,$t0,$s0	# adresse de a[i] = deplacement i + adresse de base du tableau
 	sll	$t1,$a1,2	# déplacement j
 	add	$t1,$t1,$s0	# adresse de a[j] = deplacement j + adresse de base du tableau
 	#récuperer valeurs
-	lw	$s0,0($t0)	#int temp = a[i]
-	lw 	$s1,0($t1)	#int temp2 = a[j]
+	lw	$t2,0($t0)	#int temp = a[i]
+	lw 	$t3,0($t1)	#int temp2 = a[j]
 	# swap
-	sw	$s1,0($t0)	#a[i] = temp2
-	sw	$s0,0($t1)	#a[j] = temp
+	sw	$t3,0($t0)	#a[i] = temp2
+	sw	$t2,0($t1)	#a[j] = temp
 	# restorer les registres
-	lw 	$t0, 0($sp)
-	lw 	$t1, 4($sp)
-	lw 	$s0, 8($sp)
-	lw 	$s1, 12($sp)
-	addi 	$sp, $sp, 16
+	lw 	$s0, 0($sp)
+	addi 	$sp, $sp, 4
 	jr 	$ra
 
 # int getLeftChildIndex(int index) : retourne l'indice de l'enfant de gauche
-gLci:	# enregistrer sur la pile les registre utilisé dans la fonction
-	addi 	$sp, $sp, -4
-	sw 	$t0, 0($sp)
-	addi	$t0,$0,0	# $t0 = 0
+gLci:	addi	$t0,$0,0	# $t0 = 0
 	sll 	$t0,$a0,1	# index * 2
 	addi	$t0,$t0,1	# index + 1
 	add	$v0,$0,$t0	# return
-	# restorer les registres
-	lw 	$t0, 0($sp)
-	addi 	$sp, $sp, 4
 	jr	$ra
 
 # int getRightChildIndex(int index) : retourne l'indice de l'enfant de droite
-gRci:	# enregistrer sur la pile les registre utilisé dans la fonction
-	addi 	$sp, $sp, -4
-	sw 	$t0, 0($sp)
-	addi	$t0,$0,0	# $t0 = 0
+gRci:	addi	$t0,$0,0	# $t0 = 0
 	sll 	$t0,$a0,1	# index * 2
 	addi	$t0,$t0,2	# index + 2
 	add	$v0,$0,$t0	# return
-	# restorer les registres
-	lw 	$t0, 0($sp)
-	addi 	$sp, $sp, 4
 	jr	$ra
